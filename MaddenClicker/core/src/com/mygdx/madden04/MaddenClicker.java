@@ -3,6 +3,7 @@ package com.mygdx.madden04;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.mygdx.madden04.Screens.GameScreen;
 import com.mygdx.madden04.Screens.LeaderBoard;
 import com.mygdx.madden04.Screens.MainMenu;
 import com.mygdx.madden04.Screens.PrestigeScreen;
@@ -13,9 +14,14 @@ public class MaddenClicker extends Game {
 	public MainMenu mainMenu;
 	public LeaderBoard leaderBoard;
 	public PrestigeScreen prestigeScreen;
+	public GameScreen gameScreen;
 
 	@Override
 	public void create () {
+		mainMenu = new MainMenu(this);
+		leaderBoard = new LeaderBoard(this);
+		prestigeScreen = new PrestigeScreen(this);
+		gameScreen = new GameScreen(this);
 		batch = new SpriteBatch();
 		setScreen(new SplashScreen(this));
 
