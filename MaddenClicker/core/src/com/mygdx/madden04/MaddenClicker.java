@@ -23,7 +23,7 @@ public class MaddenClicker extends Game {
 		prestigeScreen = new PrestigeScreen(this);
 		gameScreen = new GameScreen(this);
 		batch = new SpriteBatch();
-		setScreen(new SplashScreen(this));
+		setScreen(prestigeScreen);
 	}
 
 	@Override
