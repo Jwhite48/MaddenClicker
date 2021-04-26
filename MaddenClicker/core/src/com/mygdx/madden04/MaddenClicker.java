@@ -24,7 +24,6 @@ public class MaddenClicker extends Game {
 		gameScreen = new GameScreen(this);
 		batch = new SpriteBatch();
 		setScreen(new SplashScreen(this));
-
 	}
 
 	@Override
