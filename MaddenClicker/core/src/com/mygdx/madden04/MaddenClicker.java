@@ -1,6 +1,8 @@
 package com.mygdx.madden04;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.mygdx.madden04.Screens.GameScreen;
@@ -23,7 +25,8 @@ public class MaddenClicker extends Game {
 		prestigeScreen = new PrestigeScreen(this);
 		gameScreen = new GameScreen(this);
 		batch = new SpriteBatch();
-		setScreen(prestigeScreen);
+		setScreen(mainMenu);
+		Gdx.input.setInputProcessor(mainMenu.stage);
 	}
 
 	@Override

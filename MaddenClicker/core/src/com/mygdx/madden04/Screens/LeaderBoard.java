@@ -1,6 +1,7 @@
 package com.mygdx.madden04.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -27,14 +28,17 @@ import com.mygdx.madden04.MyShapeRenderer;
 public class LeaderBoard implements Screen {
     MaddenClicker game;
 
-    private Stage stage;
-    private Texture leaderboard, metal, backtexture;
+    public Stage stage;
+    private Texture leaderboard, metal, backtexture, maddenFace;
     private ImageButton backBtn;
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
     private BitmapFont bitmapFont;
     ShapeRenderer shapeRenderer;
     MyShapeRenderer myShapeRenderer;
+    Preferences prefs;
+    long score;
+    private BitmapFont instrFont;
 
     public LeaderBoard(MaddenClicker m) {
         this.game = m;
@@ -43,6 +47,7 @@ public class LeaderBoard implements Screen {
         leaderboard = new Texture("leaderboardicon.png");
         metal = new Texture("oneicon.png");
         backtexture = new Texture(Gdx.files.internal("backbtn.png"));
+        maddenFace = new Texture(Gdx.files.internal("maddenSmile.png"));
         myTextureRegion = new TextureRegion(backtexture);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
 
@@ -53,6 +58,7 @@ public class LeaderBoard implements Screen {
             @Override
             public boolean handle(Event event) {
                 game.setScreen(game.mainMenu);
+                Gdx.input.setInputProcessor(game.mainMenu.stage);
                 return false;
             }
         });
@@ -64,6 +70,9 @@ public class LeaderBoard implements Screen {
 
         shapeRenderer = new ShapeRenderer();
         myShapeRenderer = new MyShapeRenderer();
+
+        prefs = Gdx.app.getPreferences("game preferences");
+        score = score = prefs.getLong("score");
     }
 
     @Override
@@ -107,6 +116,18 @@ public class LeaderBoard implements Screen {
         game.batch.draw(metal, Gdx.graphics.getWidth()/12, Gdx.graphics.getHeight()/6 + metal.getHeight()/12, Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/7);
 
 
+        instrFont = new BitmapFont();
+        instrFont.setColor(Color.GOLD);
+        instrFont.getData().setScale(5);
+        instrFont.draw(game.batch, "Player One", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/2+metal.getHeight()/4.5f);
+        instrFont.setColor(Color.LIGHT_GRAY);
+        instrFont.draw(game.batch, "Player Two", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/3+metal.getHeight()/4.5f);
+        instrFont.setColor(Color.BROWN);
+        instrFont.draw(game.batch, "Player Three", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5.4f, Gdx.graphics.getHeight()/6+metal.getHeight()/4.5f);
+
+        game.batch.draw(maddenFace, Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/3.1f, Gdx.graphics.getHeight()/2+metal.getHeight()/7, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        game.batch.draw(maddenFace, Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/3.1f, Gdx.graphics.getHeight()/3+metal.getHeight()/7, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        game.batch.draw(maddenFace, Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/3.1f, Gdx.graphics.getHeight()/6+metal.getHeight()/7, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
 
         //bitmapFont.draw(game.batch, "test", 300, 300);
 
@@ -138,6 +159,12 @@ public class LeaderBoard implements Screen {
         stage.dispose();
         leaderboard.dispose();
         metal.dispose();
+        backtexture.dispose();
+        maddenFace.dispose();
+        bitmapFont.dispose();
+        shapeRenderer.dispose();
+        myShapeRenderer.dispose();
+        instrFont.dispose();
         myShapeRenderer.dispose();
     }
 

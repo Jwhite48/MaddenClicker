@@ -15,14 +15,14 @@ import com.mygdx.madden04.MaddenClicker;
 public class MainMenu implements Screen {
     MaddenClicker game;
     Button leaderboardButton, gameButton, prestigeButton;
-    Stage stage;
+    public Stage stage;
 
 
     public MainMenu(MaddenClicker m){
         this.game = m;
         Skin mySkin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         ScreenViewport viewport = new ScreenViewport();
-        stage = new Stage(viewport);;
+        stage = new Stage(viewport);
 
 
         //libGDX Stage will be the closest thing to an input processor
@@ -38,6 +38,7 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.leaderBoard);
+                Gdx.input.setInputProcessor(game.leaderBoard.stage);
             }
         });
 
@@ -49,6 +50,7 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.gameScreen);
+                Gdx.input.setInputProcessor(game.gameScreen.stage);
             }
         });
 
@@ -60,6 +62,7 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.prestigeScreen);
+                Gdx.input.setInputProcessor(game.prestigeScreen.stage);
             }
         });
         //breakpoint
@@ -118,6 +121,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
