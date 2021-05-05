@@ -59,7 +59,7 @@ public class LeaderBoard implements Screen {
             public boolean handle(Event event) {
                 game.setScreen(game.mainMenu);
                 Gdx.input.setInputProcessor(game.mainMenu.stage);
-                return false;
+                return true;
             }
         });
         stage.addActor(backBtn);

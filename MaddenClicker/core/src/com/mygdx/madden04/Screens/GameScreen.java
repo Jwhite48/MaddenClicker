@@ -1,6 +1,5 @@
 package com.mygdx.madden04.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
@@ -19,16 +18,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.madden04.MaddenClicker;
 
-import java.util.Date;
-
 public class GameScreen implements Screen {
 
     private final String SCOREBOARD = "MADDENS: ";
-    private final int[] LEVELS = new int[]{50,100,150};
+    private final int[] LEVELS_PLUSONE = new int[]{50,100,150};
+    private final int[] LEVELS_ADDITIONALCLICK = new int[]{30,60,90};
 
     Preferences prefs;
     long score;
-    int numberOfPlusOnes;
+    int numberOfPlusOnes; int numberOfAdditionalClicks;
 
     FreeTypeFontGenerator fontGenerator;
     FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
@@ -56,10 +54,12 @@ public class GameScreen implements Screen {
 
         prefs.putLong("score", 0);
         prefs.putInteger("numberOfPlusOnes", 0);
+        prefs.putInteger("numberOfAdditionalClicks", 0);
         prefs.flush();
 
         score = prefs.getLong("score");
         numberOfPlusOnes = prefs.getInteger("numberOfPlusOnes");
+        numberOfAdditionalClicks = prefs.getInteger("numberOfAdditionalClicks");
 
         fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -89,8 +89,9 @@ public class GameScreen implements Screen {
         b2.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                Date date = new Date();
-                System.out.println(date);
+                long time = System.currentTimeMillis();
+                prefs.putLong("startTime",time);
+                prefs.flush();
 
                 game.setScreen(game.mainMenu);
                 Gdx.input.setInputProcessor(game.mainMenu.stage);
@@ -103,7 +104,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        if(numberOfAdditionalClicks > 0){
+            long time2 = System.currentTimeMillis();
+            long time1 = prefs.getLong("startTime");
 
+            if(time2-time1 > 10000){
+                score += ((int) ((time2-time1)/10000))*numberOfAdditionalClicks;
+
+                prefs.putLong("score", score);
+                prefs.flush();
+            }
+        }
     }
 
     @Override
@@ -141,10 +152,7 @@ public class GameScreen implements Screen {
             }else if(x>plusOne.getWidth()+additional.getWidth() &&
                         x<plusOne.getWidth()+additional.getWidth()+moreMaddens.getWidth()
                             && y>0 && y<moreMaddens.getHeight()){
-                score -=50;
-
-                prefs.putLong("score", score);
-                prefs.flush();
+                
             }
         }
 
@@ -161,8 +169,8 @@ public class GameScreen implements Screen {
     }
 
     public void plusOneMethod(){
-        if(numberOfPlusOnes < 2 && score >= LEVELS[numberOfPlusOnes]){
-            score -= LEVELS[numberOfPlusOnes];
+        if(numberOfPlusOnes < LEVELS_PLUSONE.length && score >= LEVELS_PLUSONE[numberOfPlusOnes]){
+            score -= LEVELS_PLUSONE[numberOfPlusOnes];
 
             prefs.putLong("score", score);
             prefs.putInteger("numberOfPlusOnes", ++numberOfPlusOnes);
@@ -171,10 +179,13 @@ public class GameScreen implements Screen {
     }
 
     public void additionalClicksMethod(){
-        score -=30;
+        if(numberOfAdditionalClicks < LEVELS_ADDITIONALCLICK.length && score >= LEVELS_ADDITIONALCLICK[numberOfAdditionalClicks]){
+            score -= LEVELS_ADDITIONALCLICK[numberOfAdditionalClicks];
 
-        prefs.putLong("score", score);
-        prefs.flush();
+            prefs.putLong("score", score);
+            prefs.putInteger("numberOfAdditionalClicks", ++numberOfAdditionalClicks);
+            prefs.flush();
+        }
     }
 
     @Override
