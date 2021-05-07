@@ -16,10 +16,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.madden04.MaddenClicker;
@@ -54,14 +56,15 @@ public class LeaderBoard implements Screen {
         backBtn = new ImageButton(myTexRegionDrawable);
         backBtn.setSize(Gdx.graphics.getWidth()/7, Gdx.graphics.getHeight()/7);
         backBtn.setPosition(0,0);
-        backBtn.addListener(new EventListener() {
+        backBtn.addListener(new ClickListener()
+        {
             @Override
-            public boolean handle(Event event) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.mainMenu);
                 Gdx.input.setInputProcessor(game.mainMenu.stage);
-                return true;
             }
         });
+        
         stage.addActor(backBtn);
 
         bitmapFont = new BitmapFont();
