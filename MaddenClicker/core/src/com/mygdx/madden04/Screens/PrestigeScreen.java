@@ -31,25 +31,24 @@ public class PrestigeScreen implements Screen {
     Label outputLabel;
     Window window;
 
-    // (0,0) is bottom-left corner
     public PrestigeScreen(MaddenClicker m){
         prefs = Gdx.app.getPreferences("game preferences");
-        //score = prefs.getLong("score");
         this.game = m;
 
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         b1 = new TextButton("Prestige", skin, "default");
-        window = new Window("ARE YOU SURE?", skin);
+        window = new Window("Are you sure?", skin);
         window.setResizable(true);
         winYes = new TextButton("Yes", skin, "default");
-        winNo = new TextButton("No", skin, "default");
+        winNo = new TextButton("Cancel", skin, "default");
         winYes.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                if(prefs.getLong("score") > 1000){ // choose arbitrary number for now
+                if(prefs.getLong("score") > 500){ // choose arbitrary number for now
                     outputLabel.setText("Success");
+                    prefs.putLong("newestScore", prefs.getLong("score"));
                     prefs.putLong("score", 0);
                     prefs.flush();
                 }
@@ -69,6 +68,7 @@ public class PrestigeScreen implements Screen {
 
         window.add(winYes);
         window.add(winNo);
+        window.pack();
 
         b1.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/12);
         b1.setPosition(Gdx.graphics.getWidth()/3f,Gdx.graphics.getHeight()/2);
@@ -79,22 +79,6 @@ public class PrestigeScreen implements Screen {
         b2.setPosition(Gdx.graphics.getWidth()/1.2f,Gdx.graphics.getHeight()/1.1f);
 
         b1.addListener(new InputListener(){
-            /*@Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                outputLabel.setText("Press a Button");
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(prefs.getLong("score") > 1000){ // choose arbitrary number for now
-                    outputLabel.setText("Success");
-                    prefs.putLong("score", 0);
-                    prefs.flush();
-                }
-                else{
-                    outputLabel.setText("Score too low");
-                }
-                return true;
-            }*/
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 System.out.println("TESTING");
