@@ -41,6 +41,7 @@ public class PrestigeScreen implements Screen {
         b1 = new TextButton("Prestige", skin, "default");
         window = new Window("Are you sure?", skin);
         window.setResizable(true);
+        window.setPosition(240,300);
         winYes = new TextButton("Yes", skin, "default");
         winNo = new TextButton("Cancel", skin, "default");
         winYes.addListener(new InputListener(){
