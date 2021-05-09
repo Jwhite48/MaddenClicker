@@ -51,6 +51,8 @@ public class PrestigeScreen implements Screen {
                     outputLabel.setText("Success");
                     prefs.putLong("newestScore", prefs.getLong("score"));
                     prefs.putLong("score", 0);
+                    prefs.putInteger("numberOfPlusOnes", 0);
+                    prefs.putInteger("numberOfAdditionalClicks", 0);
                     prefs.flush();
                 }
                 else{

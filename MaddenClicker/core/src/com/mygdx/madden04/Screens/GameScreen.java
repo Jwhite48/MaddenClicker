@@ -31,6 +31,7 @@ public class GameScreen implements Screen {
     FreeTypeFontGenerator fontGenerator;
     FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
     BitmapFont font;
+    BitmapFont font2;
 
     int screen_width, screen_height;
 
@@ -52,10 +53,10 @@ public class GameScreen implements Screen {
 
         prefs = Gdx.app.getPreferences("game preferences");
 
-        prefs.putLong("score", 0);
+        /*prefs.putLong("score", 0);
         prefs.putInteger("numberOfPlusOnes", 0);
         prefs.putInteger("numberOfAdditionalClicks", 0);
-        prefs.flush();
+        prefs.flush();*/
 
         score = prefs.getLong("score");
         numberOfPlusOnes = prefs.getInteger("numberOfPlusOnes");
@@ -65,6 +66,9 @@ public class GameScreen implements Screen {
         fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = 80; fontParameter.color = Color.WHITE;
         font = fontGenerator.generateFont(fontParameter);
+
+        fontParameter.size = 200;
+        font2 = fontGenerator.generateFont(fontParameter);
 
         maddenNeutralFace = new Texture("maddenNeutral.png");
         maddenSmileFace = new Texture("maddenSmile.png");
@@ -104,6 +108,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        score = prefs.getLong("score");
+        numberOfPlusOnes = prefs.getInteger("numberOfPlusOnes");
+        numberOfAdditionalClicks = prefs.getInteger("numberOfAdditionalClicks");
+
         if(numberOfAdditionalClicks > 0){
             long time2 = System.currentTimeMillis();
             long time1 = prefs.getLong("startTime");
@@ -129,7 +137,9 @@ public class GameScreen implements Screen {
         font.draw(game.batch, SCOREBOARD + score, 10, screen_height-10);
 
         game.batch.draw(plusOne, 0, 0);
+        font2.draw(game.batch, numberOfPlusOnes + "", plusOne.getWidth()/2, additional.getHeight()+90);
         game.batch.draw(additional, plusOne.getWidth(), 0);
+        font2.draw(game.batch, numberOfAdditionalClicks + "", plusOne.getWidth()+additional.getWidth()/2, additional.getHeight()+90);
         game.batch.draw(moreMaddens, plusOne.getWidth()+additional.getWidth(), 0);
 
         if(Gdx.input.justTouched()){
