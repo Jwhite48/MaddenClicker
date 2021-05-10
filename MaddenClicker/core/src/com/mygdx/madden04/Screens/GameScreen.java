@@ -59,6 +59,8 @@ public class GameScreen implements Screen {
         prefs = Gdx.app.getPreferences("game preferences");
 
         /*prefs.putLong("score", 0);
+        prefs.putLong("newestScore", 0);
+        prefs.putInteger("numberOfPrestiges", 0);
         prefs.putInteger("numberOfPlusOnes", 0);
         prefs.putInteger("numberOfAdditionalClicks", 0);
         prefs.flush();*/

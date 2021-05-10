@@ -144,10 +144,10 @@ public class LeaderBoard implements Screen {
         game.batch.end();
 
 
-        //prefs.putLong("HSscore1", 0);
-        //prefs.putLong("HSscore2", 0);
-        //prefs.putLong("HSscore3", 0);
-        //prefs.flush();
+        /*prefs.putLong("HSscore1", 0);
+        prefs.putLong("HSscore2", 0);
+        prefs.putLong("HSscore3", 0);
+        prefs.flush();*/
         newestscore = prefs.getLong("newestScore");
         HSscore1 = prefs.getLong("HSscore1");
         HSscore2 = prefs.getLong("HSscore2");
