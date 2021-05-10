@@ -31,9 +31,13 @@ public class PrestigeScreen implements Screen {
     Label outputLabel;
     Window window;
 
+    int numberOfPrestiges;
+
     public PrestigeScreen(MaddenClicker m){
         prefs = Gdx.app.getPreferences("game preferences");
         this.game = m;
+
+        numberOfPrestiges = prefs.getInteger("numberOfPrestiges");
 
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -49,8 +53,9 @@ public class PrestigeScreen implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 if(prefs.getLong("score") > 500){ // choose arbitrary number for now
                     outputLabel.setText("Success");
+                    prefs.putInteger("numberOfPrestiges", ++numberOfPrestiges);
                     prefs.putLong("newestScore", prefs.getLong("score"));
-                    prefs.putLong("score", 0);
+                    prefs.putLong("score", 0+(numberOfPrestiges*50));
                     prefs.putInteger("numberOfPlusOnes", 0);
                     prefs.putInteger("numberOfAdditionalClicks", 0);
                     prefs.flush();

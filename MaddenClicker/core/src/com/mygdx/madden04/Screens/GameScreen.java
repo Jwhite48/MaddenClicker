@@ -3,6 +3,7 @@ package com.mygdx.madden04.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -48,8 +49,12 @@ public class GameScreen implements Screen {
 
     MaddenClicker game;
 
+    Sound sound;
+
     public GameScreen(MaddenClicker m){
         this.game = m;
+
+        sound = Gdx.audio.newSound(Gdx.files.internal("audio.wav"));
 
         prefs = Gdx.app.getPreferences("game preferences");
 
@@ -162,7 +167,7 @@ public class GameScreen implements Screen {
             }else if(x>plusOne.getWidth()+additional.getWidth() &&
                         x<plusOne.getWidth()+additional.getWidth()+moreMaddens.getWidth()
                             && y>0 && y<moreMaddens.getHeight()){
-                
+                sound.play();
             }
         }
 
