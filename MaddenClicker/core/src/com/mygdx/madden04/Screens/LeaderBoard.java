@@ -39,10 +39,11 @@ public class LeaderBoard implements Screen {
     ShapeRenderer shapeRenderer;
     MyShapeRenderer myShapeRenderer;
     Preferences prefs;
-    long score;
-    private BitmapFont instrFont;
+    long HSscore1, HSscore2, HSscore3, newestscore;
+    private BitmapFont playerFont, scoreFont;
 
     public LeaderBoard(MaddenClicker m) {
+        prefs = Gdx.app.getPreferences("game preferences");
         this.game = m;
 
         stage = new Stage(new ScreenViewport());
@@ -64,7 +65,7 @@ public class LeaderBoard implements Screen {
                 Gdx.input.setInputProcessor(game.mainMenu.stage);
             }
         });
-        
+
         stage.addActor(backBtn);
 
         bitmapFont = new BitmapFont();
@@ -74,8 +75,6 @@ public class LeaderBoard implements Screen {
         shapeRenderer = new ShapeRenderer();
         myShapeRenderer = new MyShapeRenderer();
 
-        prefs = Gdx.app.getPreferences("game preferences");
-        score = score = prefs.getLong("score");
     }
 
     @Override
@@ -119,22 +118,57 @@ public class LeaderBoard implements Screen {
         game.batch.draw(metal, Gdx.graphics.getWidth()/12, Gdx.graphics.getHeight()/6 + metal.getHeight()/12, Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/7);
 
 
-        instrFont = new BitmapFont();
-        instrFont.setColor(Color.GOLD);
-        instrFont.getData().setScale(5);
-        instrFont.draw(game.batch, "Player One", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/2+metal.getHeight()/4.5f);
-        instrFont.setColor(Color.LIGHT_GRAY);
-        instrFont.draw(game.batch, "Player Two", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/3+metal.getHeight()/4.5f);
-        instrFont.setColor(Color.BROWN);
-        instrFont.draw(game.batch, "Player Three", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5.4f, Gdx.graphics.getHeight()/6+metal.getHeight()/4.5f);
+
+        playerFont = new BitmapFont();
+        playerFont.setColor(Color.GOLD);
+        playerFont.getData().setScale(5);
+        playerFont.draw(game.batch, "Player One", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/2+metal.getHeight()/4.5f);
+        playerFont.setColor(Color.LIGHT_GRAY);
+        playerFont.draw(game.batch, "Player Two", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/3+metal.getHeight()/4.5f);
+        playerFont.setColor(Color.BROWN);
+        playerFont.draw(game.batch, "Player Three", Gdx.graphics.getWidth()/12+Gdx.graphics.getWidth()/5.4f, Gdx.graphics.getHeight()/6+metal.getHeight()/4.5f);
 
         game.batch.draw(maddenFace, Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/3.1f, Gdx.graphics.getHeight()/2+metal.getHeight()/7, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
         game.batch.draw(maddenFace, Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/3.1f, Gdx.graphics.getHeight()/3+metal.getHeight()/7, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
         game.batch.draw(maddenFace, Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/3.1f, Gdx.graphics.getHeight()/6+metal.getHeight()/7, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
 
+        scoreFont = new BitmapFont();
+        scoreFont.setColor(Color.WHITE);
+        scoreFont.getData().setScale(5);
+        scoreFont.draw(game.batch, String.valueOf(HSscore1), Gdx.graphics.getWidth()/2+Gdx.graphics.getWidth()/5.5F, Gdx.graphics.getHeight()/2+metal.getHeight()/4.5f);
+        scoreFont.draw(game.batch, String.valueOf(HSscore2), Gdx.graphics.getWidth()/2+Gdx.graphics.getWidth()/5.5F, Gdx.graphics.getHeight()/3+metal.getHeight()/4.5f);
+        scoreFont.draw(game.batch, String.valueOf(HSscore3), Gdx.graphics.getWidth()/2+Gdx.graphics.getWidth()/5.5F, Gdx.graphics.getHeight()/6+metal.getHeight()/4.5f);
+
         //bitmapFont.draw(game.batch, "test", 300, 300);
 
         game.batch.end();
+
+
+        //prefs.putLong("HSscore1", 0);
+        //prefs.putLong("HSscore2", 0);
+        //prefs.putLong("HSscore3", 0);
+        //prefs.flush();
+        newestscore = prefs.getLong("newestScore");
+        HSscore1 = prefs.getLong("HSscore1");
+        HSscore2 = prefs.getLong("HSscore2");
+        HSscore3 = prefs.getLong("HSscore3");
+
+
+        if (newestscore > HSscore1){
+            prefs.putLong("HSscore1", newestscore);//update hsscore1
+            prefs.flush();
+            HSscore1 = prefs.getLong("HSscore1");
+
+        } else if ((newestscore > HSscore2) && (newestscore < HSscore1)){
+            prefs.putLong("HSscore2", newestscore);
+            prefs.flush();
+            HSscore2 = prefs.getLong("HSscore2");
+
+        } else if ((newestscore > HSscore3) && (newestscore < HSscore2) && (newestscore < HSscore1)){
+            prefs.putLong("HSscore3", newestscore);
+            prefs.flush();
+            HSscore3 = prefs.getLong("HSscore3");
+        }
     }
 
     @Override
@@ -167,7 +201,8 @@ public class LeaderBoard implements Screen {
         bitmapFont.dispose();
         shapeRenderer.dispose();
         myShapeRenderer.dispose();
-        instrFont.dispose();
+        playerFont.dispose();
+        scoreFont.dispose();
         myShapeRenderer.dispose();
     }
 
