@@ -72,6 +72,7 @@ public class SplashScreen implements Screen {
 
         if(TimeUtils.timeSinceMillis(startTime) > 3000){
             game.setScreen(game.mainMenu);
+            Gdx.input.setInputProcessor(game.mainMenu.stage);
         }
 
         float rotation = madden.getRotation();

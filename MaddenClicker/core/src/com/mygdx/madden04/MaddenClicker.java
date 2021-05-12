@@ -25,8 +25,7 @@ public class MaddenClicker extends Game {
 		prestigeScreen = new PrestigeScreen(this);
 		gameScreen = new GameScreen(this);
 		batch = new SpriteBatch();
-		setScreen(mainMenu);
-		Gdx.input.setInputProcessor(mainMenu.stage);
+		setScreen(new SplashScreen(this));
 	}
 
 	@Override
